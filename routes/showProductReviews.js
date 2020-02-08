@@ -3,9 +3,20 @@ const challenges = require('../data/datacache').challenges
 const insecurity = require('../lib/insecurity')
 const db = require('../data/mongodb')
 
-// Blocking sleep function as in native MongoDB
-global.sleep = time => {
-  // Ensure that users dont accidentally dos their servers for too long
+// // Blocking sleep function as in native MongoDB
+// global.sleep = time => {
+//   console.log('called')
+//   // Ensure that users dont accidentally dos their servers for too long
+//   if (time > 2000) {
+//     time = 2000
+//   }
+//   const stop = new Date().getTime()
+//   while (new Date().getTime() < stop + time) {
+//     ;
+//   }
+// }
+
+module.exports = function sleep(time){
   if (time > 2000) {
     time = 2000
   }

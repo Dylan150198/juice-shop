@@ -150,6 +150,7 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('token')
     this.cookieService.remove('token')
     sessionStorage.removeItem('bid')
+    sessionStorage.removeItem('bidSig')
     this.userService.isLoggedIn.next(false)
     this.router.navigate(['/'])
   }

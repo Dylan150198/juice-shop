@@ -4,6 +4,7 @@ const models = require('../models/index')
 const challenges = require('../data/datacache').challenges
 const users = require('../data/datacache').users
 const config = require('config')
+const crypto = require('crypto')
 
 module.exports = function login () {
   function afterLogin (user, res, next) {
@@ -12,8 +13,8 @@ module.exports = function login () {
       .then(([basket]) => {
         const token = insecurity.authorize(user)
         user.bid = basket.id // keep track of original basket for challenge solution check
-        insecurity.authenticatedUsers.put(token, user)
-        res.json({ authentication: { token, bid: basket.id, umail: user.data.email } })
+        const signature = insecurity.encrypt(user.bid)
+        res.json({ authentication: { token, bid: user.bid, bidSig: signature, umail: user.data.email } })
       }).catch(error => {
         next(error)
       })

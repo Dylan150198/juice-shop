@@ -76,6 +76,7 @@ describe('LoginComponent', () => {
     localStorage.removeItem('token')
     localStorage.removeItem('email')
     sessionStorage.removeItem('bid')
+    sessionStorage.removeItem('bidSig')
     fixture = TestBed.createComponent(LoginComponent)
     component = fixture.componentInstance
     fixture.detectChanges()

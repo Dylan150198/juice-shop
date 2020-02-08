@@ -34,6 +34,51 @@ exports.captchaBypassChallenge = () => (req, res, next) => {
   next()
 }
 
+exports.checkIfUserIsAdmin = () => (req, res, next) => {
+  let token = req.get('token')
+  if(token != null){
+    if(jwt.verify(token, insecurity.publicKey)){
+      let decoded = jwt.decode(token)
+      if(decoded.data.role === 'admin' && decoded.data.isActive == true){
+        return next();
+      }
+    }
+  }
+    req.body.role = 'customer';
+    next();
+}
+
+function parseCookies (request) {
+  var list = {},
+      rc = request.headers.cookie;
+
+  rc && rc.split(';').forEach(function( cookie ) {
+      var parts = cookie.split('=');
+      list[parts.shift().trim()] = decodeURI(parts.join('='));
+  });
+
+  return list;
+}
+
+exports.checkIfAuthorizedForFTP = () => (req, res, next) => {
+  var cookies = parseCookies(req);
+
+  let token = cookies.token
+
+  if(token != null)
+  {
+    if(jwt.verify(token, insecurity.publicKey)){
+      let decoded = jwt.decode(token)
+      console.log('token: ' + token)
+      console.log('decoded: ' + decoded)
+      if(decoded.data.role === 'admin' && decoded.data.isActive == true){
+        return next();
+      }
+    }
+  }
+   next(new Error('Unauthorized')) 
+}
+
 exports.registerAdminChallenge = () => (req, res, next) => {
   if (utils.notSolved(challenges.registerAdminChallenge)) {
     if (req.body && req.body.role === insecurity.roles.admin) {

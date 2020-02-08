@@ -168,8 +168,8 @@ app.use('/assets/i18n', verify.accessControlChallenges())
 app.use('/solve/challenges/server-side', verify.serverSideChallenges())
 
 /* /ftp directory browsing and file download */
-app.use('/ftp', serveIndex('ftp', { icons: true }))
-app.use('/ftp/:file', fileServer())
+app.use('/ftp', verify.checkIfAuthorizedForFTP(), serveIndex('ftp', { icons: true }))
+app.use('/ftp/:file', verify.checkIfAuthorizedForFTP(), fileServer())
 
 /* /encryptionkeys directory browsing */
 app.use('/encryptionkeys', serveIndex('encryptionkeys', { icons: true, view: 'details' }))
@@ -282,7 +282,7 @@ app.post('/api/Feedbacks', captcha.verifyCaptcha())
 /* Captcha Bypass challenge verification */
 app.post('/api/Feedbacks', verify.captchaBypassChallenge())
 /* User registration challenge verifications before finale takes over */
-app.post('/api/Users', verify.registerAdminChallenge())
+app.post('/api/Users', verify.checkIfUserIsAdmin(), verify.registerAdminChallenge())
 app.post('/api/Users', verify.passwordRepeatChallenge())
 /* Unauthorized users are not allowed to access B2B API */
 app.use('/b2b/v2', insecurity.isAuthorized())

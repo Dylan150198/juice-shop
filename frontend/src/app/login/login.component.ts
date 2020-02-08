@@ -68,6 +68,7 @@ export class LoginComponent implements OnInit {
     this.formSubmitService.attachEnterKeyHandler('login-form', 'loginButton', () => this.login())
   }
 
+
   login () {
     this.user = {}
     this.user.email = this.emailControl.value
@@ -76,6 +77,8 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('token', authentication.token)
       this.cookieService.put('token', authentication.token)
       sessionStorage.setItem('bid', authentication.bid)
+      sessionStorage.setItem('bidSig', authentication.bidSig)
+
       this.userService.isLoggedIn.next(true)
       this.router.navigate(['/search'])
     }, ({ error }) => {
@@ -87,6 +90,7 @@ export class LoginComponent implements OnInit {
       localStorage.removeItem('token')
       this.cookieService.remove('token')
       sessionStorage.removeItem('bid')
+      sessionStorage.removeItem('bidSig')
       this.error = error
       this.userService.isLoggedIn.next(false)
       this.emailControl.markAsPristine()
