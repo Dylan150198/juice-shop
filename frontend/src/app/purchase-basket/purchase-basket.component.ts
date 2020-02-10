@@ -46,6 +46,7 @@ export class PurchaseBasketComponent implements OnInit {
           product.price = product.deluxePrice
         })
       }
+
       this.dataSource = basket.Products
       this.itemTotal = basket.Products.reduce((itemTotal, product) => itemTotal + product.price * product.BasketItem.quantity, 0)
       this.bonus = basket.Products.reduce((bonusPoints, product) => bonusPoints + Math.round(product.price / 10) * product.BasketItem.quantity, 0)

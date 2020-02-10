@@ -10,8 +10,13 @@ module.exports = function retrieveBasket () {
       .then(basket => {
         /* jshint eqeqeq:false */
         if (utils.notSolved(challenges.basketAccessChallenge)) {
-          console.log('ree')
+        
           const user = insecurity.authenticatedUsers.from(req)
+          if(!insecurity.decrypt(id))
+          {
+            return next(new Error('BID Tempering detected.'))
+          }
+
           if (user && id && id !== 'undefined' && id !== 'null' && user.bid != id) { // eslint-disable-line eqeqeq
             utils.solve(challenges.basketAccessChallenge)
           }
@@ -21,9 +26,12 @@ module.exports = function retrieveBasket () {
             basket.Products[i].name = req.__(basket.Products[i].name)
           }
         }
+        
         res.json(utils.queryResultToJson(basket))
       }).catch(error => {
         next(error)
+        
       })
+      
   }
 }
