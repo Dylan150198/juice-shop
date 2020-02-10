@@ -10,6 +10,7 @@ module.exports = function retrieveBasket () {
       .then(basket => {
         /* jshint eqeqeq:false */
         if (utils.notSolved(challenges.basketAccessChallenge)) {
+          console.log('ree')
           const user = insecurity.authenticatedUsers.from(req)
           if (user && id && id !== 'undefined' && id !== 'null' && user.bid != id) { // eslint-disable-line eqeqeq
             utils.solve(challenges.basketAccessChallenge)

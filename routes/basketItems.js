@@ -5,6 +5,7 @@ const models = require('../models/index')
 
 module.exports.addBasketItem = function addBasketItem () {
   return (req, res, next) => {
+    console.log(req)
     var result = utils.parseJsonCustom(req.rawBody)
     var productIds = []
     var basketIds = []
@@ -22,6 +23,7 @@ module.exports.addBasketItem = function addBasketItem () {
 
     const user = insecurity.authenticatedUsers.from(req)
     if (user && basketIds[0] && basketIds[0] !== 'undefined' && user.bid != basketIds[0]) { // eslint-disable-line eqeqeq
+      console.log('reeeeeeeeeeeeeee from addBasketItem()')
       res.status(401).send('{\'error\' : \'Invalid BasketId\'}')
     } else {
       const basketItem = {
