@@ -69,8 +69,6 @@ exports.checkIfAuthorizedForFTP = () => (req, res, next) => {
   {
     if(jwt.verify(token, insecurity.publicKey)){
       let decoded = jwt.decode(token)
-      console.log('token: ' + token)
-      console.log('decoded: ' + decoded)
       if(decoded.data.role === 'admin' && decoded.data.isActive == true){
         return next();
       }
